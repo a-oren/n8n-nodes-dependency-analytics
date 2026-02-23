@@ -1,4 +1,5 @@
 import type { IExecuteFunctions, IHttpRequestOptions } from 'n8n-workflow';
+import { throwError } from './errors';
 
 export function getBase(ctx: IExecuteFunctions, itemIndex: number): string {
   let baseURLRaw = ctx.getNodeParameter(
@@ -19,7 +20,8 @@ export function chooseCredential(ctx: IExecuteFunctions, itemIndex: number): str
     case 'trustifyClientCredentials':
       return 'trustifyClientCredsOAuth2Api';
     default:
-      throw new Error(`Invalid authentication method: ${authMethod}`);
+      throwError(ctx.getNode(), `Invalid authentication method: ${authMethod}`, itemIndex);
+      return '';
   }
 }
 
